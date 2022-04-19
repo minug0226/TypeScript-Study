@@ -37,4 +37,35 @@
       resolve(100);
     });
   }
-}   
+  // JavaScript ✨ => TypeScript
+  // Optional parameter
+  // 두가지 인자에 옵션을 줄 수가 있다.
+  // 1. ?를 붙여주면 그 인자는 전달 받을 수도 있고 전달 받지 않을 수도 있다고 명시하게 된다. ✨ 이걸 쓰자.
+  // 2. | undefined 사용하기  ex) lastName: string | undefined 로도 옵션을 줄 수가 있다. 💩
+  // 2번의 방법으로 할 경우 그렇게 지정해놓은 인자는 무조건 undefined라고 써줘야 사용이 가능하다.
+  function printName(firstName: string, lastName?: string) {
+    console.log(firstName);
+    console.log(lastName);
+  }
+  printName("Steve", "jobs");
+  printName("Ellie"); // 만약 Optional parameter 설정을 하지않으면 불평을 하게 된다.
+  printName("Anna", undefined); // Optional parameter 2번째 방법
+
+  // Default parameter
+  // 기본설정된 값을 출력하게 한다.
+  // Optional parameter과의 차이점이 분명하다. Optional은 값이 전달받지 않으면 undefined를 출력하는 반면 아무것도 전달하지 않아도 자동적으로 Default하게 출력한다
+  function printMessage(message: string = "default message") {
+    console.log(message);
+  }
+  printMessage();
+  // Rest parameter
+
+  // 받아오는 모든 숫자 데이터들을 배열 형태로 반환
+  function addNumbers(...numbers: number[]): number {
+    // numbers 배열을 reduce를 이용해서 계속 더 해 나가게 하기
+    return numbers.reduce((a, b) => a + b);
+  }
+  console.log(addNumbers(1, 2));
+  console.log(addNumbers(1, 2, 3, 4));
+  console.log(addNumbers(1, 2, 3, 4, 5, 0));
+}
