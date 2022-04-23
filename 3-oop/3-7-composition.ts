@@ -1,10 +1,52 @@
 {
-  // 다형성을 구현해보자.
+  // 상속대신에 컴포지션을!!!
+  // 족보가 꼬인다라는 말처럼!
+  // 상속의 문제점은 깊이가 깊어질수록 서로간의 관계가 조금씩 복잡해질 수 있다. 상속은 깊게 가면 불리하다는걸 잊지말자.
+  // 컴포지션을 배워보자!
   type CoffeeCup = {
     shots: number;
     hasMilk?: boolean;
     hasSugar?: boolean;
   };
+
+  interface MilkFrother {
+    makeMilk(cup: CoffeeCup): CoffeeCup;
+  }
+
+  interface SugarSource {
+    addSugar(cup: CoffeeCup): CoffeeCup;
+  }
+  // 각각의 기능별로 클래스를 만들어서 필요한 곳에다가 가져가면 된다 (컴포지션)
+  // 싸구려 우유 거품기
+  class CheapMilkSteamer implements MilkFrother {
+    makeMilk(cup: CoffeeCup): CoffeeCup {
+      console.log(`Steaming some milk🥛...`);
+      return {
+        ...cup,
+        hasMilk: true,
+      };
+    }
+  }
+
+  class FancyMilkSteamer implements MilkFrother {
+    makeMilk(cup: CoffeeCup): CoffeeCup {
+      console.log(`Fancy!!!! Steaming some milk🥛...`);
+      return {
+        ...cup,
+        hasMilk: true,
+      };
+    }
+  }
+  // 설탕 제조기
+  class AutomaticSugarMixer implements SugarSource {
+    addSugar(cuppa: CoffeeCup): CoffeeCup {
+      console.log(`Adding sugar...`);
+      return {
+        ...cuppa,
+        hasSugar: true,
+      };
+    }
+  }
 
   interface CoffeeMaker {
     makeCoffee(shots: number): CoffeeCup;
@@ -77,31 +119,34 @@
     }
   }
 
-  // 우유는 만들수 없고 설탕만 추가한 스윗커피메이커
   class SweetCoffeeMaker extends CoffeeMachine {
     makeCoffee(shots: number): CoffeeCup {
-      const coffee = super.makeCoffee(shots); // super를 이용해서 부모클래스에 있는걸로 커피만들기
+      const coffee = super.makeCoffee(shots);
       return {
         ...coffee,
-        hasSugar: true, // hasSugar로 덮어씌기 하기
+        hasSugar: true,
       };
     }
   }
 
-  // 다형성의 장점을 확인해보자.
-  // 다형성의 장점은 내부적으로 구현된 다양한 클래스들이 한가지 인터페이스에 구현하거나 또는 동일한 부모클래스를 상속했을때 공통된 API를 호출할 수 있다는것이다.
-  const machines: CoffeeMaker[] = [
-    // coffeeMaker의 배열이기 때문에 작성한 API를 다 쓸 수있다.
-    new CoffeeMachine(16),
-    new CaffeLatteMachine(16, "1"),
-    new SweetCoffeeMaker(16),
-    new CoffeeMachine(16),
-    new CaffeLatteMachine(16, "1"),
-    new SweetCoffeeMaker(16),
-  ];
-  // 이걸 빙글빙글 돌면서
-  machines.forEach((machine) => {
-    console.log("-------------------------");
-    machine.makeCoffee(1);
-  });
+  class SweetCaffeLatteMachine extends CoffeeMachine {
+    constructor(
+      beans: number,
+      private sugar: SugarSource,
+      private milk: MilkFrother
+    ) {
+      super(beans);
+    }
+    makeCoffee(shots: number): CoffeeCup {
+      const coffee = super.makeCoffee(shots);
+      const milkCoffee = this.milk.makeMilk(coffee);
+      return this.sugar.addSugar(milkCoffee);
+    }
+  }
+  const machine = new SweetCaffeLatteMachine(
+    32,
+    new AutomaticSugarMixer(),
+    new FancyMilkSteamer()
+  );
+  machine.makeCoffee(2);
 }
