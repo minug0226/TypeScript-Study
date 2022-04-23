@@ -29,4 +29,8 @@
   minwookName = "name";
   type JSON = "json";
   const json: JSON = "json";
+
+  // 이러면 true만 할당할 수 있다.
+  type Boal = true;
+  const isCat: Boal = true;
 }
