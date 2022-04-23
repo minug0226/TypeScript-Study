@@ -49,4 +49,30 @@
 
   const maker = CoffeeMaker.makeMachine(32);
   maker.fillCoffeeBeans(32); // 이렇게해야 커피콩을 추가할 수 있는것.
+
+  class User {
+    // get을 이용해서 fullName을 정의를 내릴 수 있다
+    // 어떠한 계산을 해야할때 조금 더 유용하게 쓰는 방법이다.
+    get fullName(): string {
+      return `${this.firstName} ${this.lastName}`;
+    }
+    private internalAge = 4;
+    get age(): number {
+      return this.internalAge;
+    }
+    // set을 이용해서 어떠한 숫자를 받아온다. 전달받은 숫자로 internalAge 값을 할당해주기
+    // internalAge는 private이기에 접근할 수 없지만 age를 통해서 접근이 되게 된다.
+    // 다시 할당하게 만들 수 있다.
+    // 이렇게하면 유효성 검사도 할 수있다.
+    set age(num: number) {
+      if (num < 0) {
+      }
+      this.internalAge = num;
+    }
+    // 생성자에 접근제어자를 설정하면 아주아주 편하게 설정가능하다.
+    constructor(private firstName: string, public lastName: string) {}
+  }
+  const user = new User("Steve", "Jobs");
+  user.age = 6;
+  console.log(user.fullName); // getter와 setter는 접근할 때는 함수가 아니라 멤버변수에 접근하는 것처럼 작성해야함
 }
