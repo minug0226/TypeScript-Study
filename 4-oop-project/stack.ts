@@ -19,12 +19,13 @@ class StackImpl implements Stack {
   private _size: number = 0; // 동일한 이름은 _을 붙여줘서 내부에만 쓴다는 느낌을 주면 좋다.
   private head?: StackNode;
 
-  constructor(private capacity: number) {}
+  constructor(private capacity: number) {} // 총 스택의 사이즈를 전달받기
   get size() {
     return this._size;
   }
   push(value: string) {
     if (this.size === this.capacity) {
+      // 스택 용량 정한거에 꽉 찼다면!
       throw new Error("Stack is full!");
     }
     const node: StackNode = { value, next: this.head };
