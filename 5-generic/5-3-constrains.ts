@@ -43,4 +43,23 @@ bob.workPartTime();
 
 const wookAfterPay = pay(wook);
 const bobAfterPay = pay(bob);
+
+const obj = {
+  name: "wook",
+  age: 25,
+};
+
+const obj2 = {
+  animal: "🐕",
+};
+
+console.log(getValue(obj, "name")); // wook
+console.log(getValue(obj, "age")); // 25
+console.log(getValue(obj2, "animal")); // 🐕
+
+// 상속을 해준다.
+// keyof 어떤임의의 타입 -> 그 오브젝트 안에 들어있는 키의 타입을 말함.
+// 타입을 보장해야하기 때문에 리턴되는 값은 T에 K의 벨류가 리턴되게끔.
+function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
 }
