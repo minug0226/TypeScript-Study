@@ -1,11 +1,23 @@
 {
-  // 세부적인 상속한 클래스를 만들기.
-  class TimeoutError extends Error {}
-  class OfflineError extends Error {}
+  // 실패한것은
+  type NetworkErrorState = {
+    result: "fail";
+    reason: "offline" | "down" | "timeout";
+  };
+
+  // 성공했을때 타입
+  type SuccessState = {
+    result: "success";
+  };
+
+  // union 타입
+  type ResultState = SuccessState | NetworkErrorState;
 
   class NetworkClient {
-    tryConnect(): void {
-      throw new OfflineError("no network!");
+    tryConnect(): ResultState {
+      return {
+        result: "success",
+      };
     }
   }
 
@@ -17,7 +29,6 @@
     }
   }
 
-  // error는 any 타입이다.
   class App {
     constructor(private userService: UserService) {}
     run() {
