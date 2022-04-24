@@ -14,4 +14,9 @@
     about: { title: "About" },
     contact: { title: "Contact" },
   };
+
+  // Capitalize
+  // 이건 별거아닐수도 있는데 첫글자를 대문자로 전환하게 해준다 ㅋㅋ
+  type Product = "cat" | "dog";
+  type NewProduct = Capitalize<Product>; // 'Cat' | 'Dog'
 }
